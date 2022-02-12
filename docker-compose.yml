@@ -3,6 +3,16 @@ services:
   db:
     image: mysql
     restart: always
+    ports:
+      - "3306:3306"
     environment:
+      MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test_db
+      MYSQL_DATABASE: laravel
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge      
