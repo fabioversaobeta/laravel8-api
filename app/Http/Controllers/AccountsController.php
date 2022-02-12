@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Http\Requests\BalanceAccountRequest;
-use App\Service\AccountService;
+use App\Services\AccountService;
 use Illuminate\Http\Request;
 
 class AccountsController extends Controller
@@ -51,10 +51,7 @@ class AccountsController extends Controller
     public function reset()
     {
         //
-        return response()->json([
-            'name' => 'Abigail',
-            'state' => 'CA',
-        ]);
+        return response('OK', 200);
     }
 
     /**
@@ -65,7 +62,7 @@ class AccountsController extends Controller
      */
     public function balance(BalanceAccountRequest $request)
     {
-        $balance = $this->accountService->getBalance($request->account_id);
+        $balance = $this->accountService->getBalance($request);
 
         return response($balance, 200);
     }

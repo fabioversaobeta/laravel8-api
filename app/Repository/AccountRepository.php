@@ -1,20 +1,12 @@
 <?php
 
-use Illuminate\Support\Collection;
 use App\Repository\BaseRepository;
+use Illuminate\Http\Request;
 
-namespace App\Repositories;
+namespace App\Repository;
 
 class AccountRepository extends BaseRepository {
-    protected $accounts;
-
-    public function __construct(collection $accounts)
-    {
-        parent::__construct($accounts);
-    }
-
-
-    private $accounts2 = [
+    protected $accounts = [
         0 => [
             "account_id" => 100,
             "balance" => 20
@@ -24,6 +16,11 @@ class AccountRepository extends BaseRepository {
             "balance" => 20
         ]
     ];
+
+    public function __construct()
+    {
+        parent::__construct((object) $this->accounts);
+    }
 
     public function reset()
     {
@@ -44,8 +41,10 @@ class AccountRepository extends BaseRepository {
     /**
      * Get Balance of Account by account_id
      */
-    public function getBalance($account_id)
+    public function getBalance(Request $request)
     {
+        $account_id = $request->account_id;
+
         $accounts = collect($this->accounts);
 
         $account = $accounts->firstWhere('account_id', $account_id);

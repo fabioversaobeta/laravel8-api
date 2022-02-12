@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Support\Collection;
-
-namespace App\Repositories;
+namespace App\Repository;
 
 class BaseRepository {
     protected $obj;
@@ -12,7 +10,7 @@ class BaseRepository {
         $this->obj = $obj;
     }
 
-    public function find($field, $valye)
+    public function find($id)
     {
         // TODO implement find
 

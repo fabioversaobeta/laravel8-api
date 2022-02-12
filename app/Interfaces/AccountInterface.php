@@ -1,8 +1,12 @@
 <?php
 
+namespace App\Interfaces;
+
+use Illuminate\Http\Request;
+
 interface AccountInterface
 {
     public function reset();
-    public function getBalance(int $account_id);
-    public function createAccount(Events $event);
+    public function getBalance(Request $request);
+    public function createAccount(Request $request);
 }
