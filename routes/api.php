@@ -21,9 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('accounts')->group(function () {
-    Route::post('reset', [AccountsController::class, 'reset']);
-});
-
+Route::post('reset', [AccountsController::class, 'reset']);
 Route::post('event', [EventsController::class, 'store']);
 Route::get('balance/{account_id?}', [AccountsController::class, 'balance']);

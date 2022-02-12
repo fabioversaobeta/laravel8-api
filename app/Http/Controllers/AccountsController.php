@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Http\Requests\BalanceAccountRequest;
+use App\Service\AccountService;
 use Illuminate\Http\Request;
 
 class AccountsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    protected $accountService;
+
+    public function __construct(AccountService $accountService)
     {
-        //
+        $this->accountService = $accountService;
     }
 
     /**
@@ -33,54 +32,15 @@ class AccountsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateAccountRequest $request)
     {
-        //
-    }
+        $createdAccount = $this->accountService->createaAccount($request);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Account $account)
-    {
-        //
-    }
+        if (!$createdAccount) {
+            return response('fail', 500);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Account $account)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Account $account)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Account $account)
-    {
-        //
+        return response()->json($createdAccount);
     }
 
     /**
@@ -91,7 +51,10 @@ class AccountsController extends Controller
     public function reset()
     {
         //
-        dd('reset');
+        return response()->json([
+            'name' => 'Abigail',
+            'state' => 'CA',
+        ]);
     }
 
     /**
@@ -100,8 +63,10 @@ class AccountsController extends Controller
      * @param  int  $account_id
      * @return \Illuminate\Http\Response
      */
-    public function balance(Request $request)
+    public function balance(BalanceAccountRequest $request)
     {
-        dd($request->account_id);
+        $balance = $this->accountService->getBalance($request->account_id);
+
+        return response($balance, 200);
     }
 }
