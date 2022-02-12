@@ -82,4 +82,15 @@ class AccountsController extends Controller
     {
         //
     }
+
+    /**
+     * Reset all data
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function reset()
+    {
+        //
+        dd('reset');
+    }
 }
