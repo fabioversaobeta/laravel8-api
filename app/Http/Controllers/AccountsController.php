@@ -93,4 +93,15 @@ class AccountsController extends Controller
         //
         dd('reset');
     }
+
+    /**
+     * Get Balance of user
+     * 
+     * @param  int  $account_id
+     * @return \Illuminate\Http\Response
+     */
+    public function balance(Request $request)
+    {
+        dd($request->account_id);
+    }
 }
