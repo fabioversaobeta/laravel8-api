@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Interfaces\AccountInterface;
 use App\Models\Events;
 use App\Repository\AccountRepository;
-use App\Classes\Account;
+use App\Classes\AccountClass;
 use Illuminate\Http\Request;
 
 class AccountService implements AccountInterface {
@@ -19,12 +19,12 @@ class AccountService implements AccountInterface {
 
     public function reset()
     {
-        // $accountRepository->reset();
+        $this->accountRepository->delete();
     }
     
     public function getBalance(Request $request)
     {
-        $account_id = $request;
+        $account_id = $request->account_id;
 
         if (!is_numeric($account_id)) {
             return false;
@@ -34,7 +34,13 @@ class AccountService implements AccountInterface {
 
         // TODO return account balance
 
-        $this->accountRepository->getBalance($account_id);
+        $account = $this->accountRepository->find($account_id);
+
+        if (!$account) {
+            return false;
+        }
+
+        return $account->getBalance();
     }
 
     public function createAccount(Request $request)
@@ -47,7 +53,7 @@ class AccountService implements AccountInterface {
             throw 'Not is possible create account';
         }
 
-        $account = new Account([
+        $account = new AccountClass([
             "account_id" => $destination,
             "balance" => $amount
         ]);

@@ -21,5 +21,5 @@ Route::get('/', function () {
 });
 
 Route::post('reset', [AccountsController::class, 'reset']);
-Route::post('event', [EventsController::class, 'store']);
+Route::post('event', [EventsController::class, 'event']);
 Route::get('balance/{account_id?}', [AccountsController::class, 'balance']);
