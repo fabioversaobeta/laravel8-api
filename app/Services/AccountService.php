@@ -6,6 +6,7 @@ use App\Interfaces\AccountInterface;
 use App\Models\Events;
 use App\Repository\AccountRepository;
 use App\Classes\AccountClass;
+use App\Models\Account;
 use Illuminate\Http\Request;
 
 class AccountService implements AccountInterface {
@@ -59,6 +60,11 @@ class AccountService implements AccountInterface {
         ]);
 
         return $this->accountRepository->save($account);
+    }
+
+    public function findAccount($account_id)
+    {
+        return $this->accountRepository->find($account_id);
     }
      
 }

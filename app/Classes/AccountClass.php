@@ -8,12 +8,6 @@ class AccountClass {
     private $account_id;
     private $balance;
 
-    // public function __construct($array)
-    // {
-    //     $this->account_id = $array['account_id'];
-    //     $this->balance = $array['balance'];
-    // }
-
     public function __construct()
     {
         
