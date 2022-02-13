@@ -40,7 +40,9 @@ class AccountRepository {
 
     public function save($object)
     {
-        
+        $this->model->id = $object->getId();
+        $this->model->balance = $object->getBalance();
+
         return $this->model->save();
     }
 

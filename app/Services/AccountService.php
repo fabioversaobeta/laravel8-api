@@ -51,15 +51,20 @@ class AccountService implements AccountInterface {
         $amount = $request->amount;
 
         if ($type != 'deposit') {
-            throw 'Not is possible create account';
+            return false;
         }
 
-        $account = new AccountClass([
-            "account_id" => $destination,
-            "balance" => $amount
-        ]);
+        $account = new AccountClass();
 
-        return $this->accountRepository->save($account);
+        $model = new Account();
+        $model->id = $destination;
+        $model->balance = $amount;
+
+        $account->setObject($model);
+
+        $this->accountRepository->save($account);
+
+        return $account;
     }
 
     public function findAccount($account_id)

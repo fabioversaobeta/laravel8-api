@@ -26,15 +26,16 @@ class EventService implements EventInterface {
         $account = $this->accountRepository->find($request->destination);
 
         if (!$account) {
-            $this->accountService->createAccount($request);
+            $account = $this->accountService->createAccount($request);
         }
 
-        $account->deposit($request);
+        $account->deposit($request->amount);
 
-        dd($account);
+        $model = $account->getObject();
+        $model->save();
 
         return [
-            "destination" => $account->getObject()
+            "destination" => $account->getReturn()
         ];
     }    
     

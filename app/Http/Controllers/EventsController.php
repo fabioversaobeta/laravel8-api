@@ -32,32 +32,28 @@ class EventsController extends Controller
 
         switch ($request->type) {
             case 'deposit':
-                $this->deposit($request);
+                $return = $this->deposit($request);
                 break;
 
             case 'withdraw':
-                $this->withdraw($request);
+                $return = $this->withdraw($request);
                 break;    
             
             case 'transfer':
-                $this->transfer($request);
+                $return = $this->transfer($request);
                 break;          
     
             default:
                 return response('', 404);
                 break;
         }
+
+        return response($return, 200);
     }
 
     private function deposit(EventRequest $request)
     {
-        // TODO implement
-        $destination = $request->destination;
-        $amount = $request->amount;
-
-        $return = $this->eventService->deposit($destination, $amount);
-
-        return response($return, 200);
+        return $this->eventService->deposit($request);
     }
 
     private function withdraw(EventRequest $request)

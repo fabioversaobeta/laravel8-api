@@ -33,6 +33,14 @@ class AccountClass {
         return $account;
     }
 
+    public function getReturn()
+    {
+        return [
+            "id" => $this->account_id,
+            "balance" => $this->balance
+        ];
+    }
+
     public function setObject(Account $model)
     {
         $this->account_id = $model->id;
