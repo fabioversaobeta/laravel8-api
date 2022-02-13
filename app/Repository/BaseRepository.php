@@ -10,6 +10,14 @@ class BaseRepository {
         $this->obj = $obj;
     }
 
+    public function save($obj)
+    {
+        $this->obj->account_id = $obj->getId();
+        $this->obj->balance = $obj->getBalance();
+
+        return $this->obj->save();
+    }
+
     public function find($id)
     {
         // TODO implement find

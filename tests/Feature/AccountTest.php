@@ -15,4 +15,29 @@ class AccountTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    /** @test */
+    public function create_new_account()
+    {
+        $data = [
+            'type' => 'deposit',
+            'destination' => 100,
+            'amount' => 10
+        ];
+
+        $return = [
+            "destination" => [
+                "id" => "100",
+                "balance" => 10
+            ]
+        ];
+
+        $response = $this->post('/event', $data);
+
+        $response->assertStatus(200);
+
+        $response->assertExactJson($return);
+
+        // {"destination": {"id":"100", "balance":10}}
+    }
 }

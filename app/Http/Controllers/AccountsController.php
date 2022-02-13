@@ -35,13 +35,15 @@ class AccountsController extends Controller
      */
     public function store(CreateAccountRequest $request)
     {
-        $createdAccount = $this->accountService->createaAccount($request);
+        $createdAccount = $this->accountService->createAccount($request);
 
         if (!$createdAccount) {
-            return response('fail', 500);
+            throw 'Not is possible create account';
         }
 
-        return response()->json($createdAccount);
+        return response($createdAccount, 200, [
+            'Content-Type' => 'application/json'
+        ]);
     }
 
     /**
@@ -51,8 +53,9 @@ class AccountsController extends Controller
      */
     public function reset()
     {
-        //
-        return response('OK', 200);
+        // TODO implement reset
+        
+        return response('', 200);
     }
 
     /**

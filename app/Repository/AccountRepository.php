@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 
 namespace App\Repository;
 
+use Exception;
+use Illuminate\Http\Request;
+
 class AccountRepository extends BaseRepository {
     protected $accounts = [
         0 => [
@@ -24,18 +27,7 @@ class AccountRepository extends BaseRepository {
 
     public function reset()
     {
-        $accounts = [
-            0 => [
-                "account_id" => 100,
-                "balance" => 20
-            ],
-            1 => [
-                "account_id" => 300,
-                "balance" => 20
-            ]
-        ];
-
-        $this->accounts = accounts;
+        // TODO code here
     }
 
     /**
