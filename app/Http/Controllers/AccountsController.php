@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Http\Requests\BalanceAccountRequest;
+use App\Http\Requests\CreateAccountRequest;
 use App\Services\AccountService;
 use Illuminate\Http\Request;
 

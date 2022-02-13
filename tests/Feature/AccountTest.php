@@ -11,7 +11,7 @@ class AccountTest extends TestCase
     /** @test */
     public function reset_all_data_front_start_tests()
     {
-        $response = $this->post('/api/reset');
+        $response = $this->post('/reset');
 
         $response->assertStatus(200);
     }
