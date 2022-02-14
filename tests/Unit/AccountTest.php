@@ -31,7 +31,8 @@ class AccountTest extends TestCase
     {
         $this->accountService->reset();
 
-        $createdAccount = $this->accountService->createAccount(125, 0) ? true : false;
+        $createdAccount = $this->accountService
+            ->createAccount("125", 0) ? true : false;
 
         $this->assertTrue($createdAccount);
     }
@@ -42,8 +43,8 @@ class AccountTest extends TestCase
         $accountService = new AccountService(new AccountRepository(new Account()));
         $accountService->reset();
 
-        $balance = $accountService->getBalance(100);
+        $balance = $accountService->getBalance(300);
 
-        $this->assertEquals($balance, 10);
+        $this->assertEquals($balance, 0);
     }
 }

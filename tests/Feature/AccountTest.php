@@ -34,11 +34,21 @@ class AccountTest extends TestCase
     }
 
     /** @test */
+    public function view_balance_of_account_of_non_exist_account()
+    {
+        $response = $this->post('/reset');
+        
+        $response = $this->get('/balance?account_id=400');
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
     public function view_balance_of_account()
     {
         $response = $this->post('/reset');
         
-        $response = $this->get('/balance?account_id=100');
+        $response = $this->get('/balance?account_id=300');
 
         $response->assertStatus(200);
     }
@@ -48,23 +58,12 @@ class AccountTest extends TestCase
     {
         $data = [
             'type' => 'deposit',
-            'destination' => 105,
+            'destination' => "105",
             'amount' => 10
         ];
 
-        // $return = [
-        //     "destination" => [
-        //         "id" => "105",
-        //         "balance" => 10
-        //     ]
-        // ];
-
         $response = $this->post('/event', $data);
 
-        $response->assertStatus(200);
-
-        // $response->assertExactJson($return);
-
-        // {"destination": {"id":"100", "balance":10}}
+        $response->assertStatus(201);
     }
 }

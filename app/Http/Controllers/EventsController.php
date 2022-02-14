@@ -27,7 +27,7 @@ class EventsController extends Controller
     /**
      * Events of Accounts
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\EventRequest $request
      * @return \Illuminate\Http\Response
      */
     public function event(EventRequest $request)
@@ -55,22 +55,30 @@ class EventsController extends Controller
         }
 
         $headers = ['Content-type'=> 'application/json; charset=utf-8'];
-
         $strJson = $this->formatJson($return);
 
         return response($strJson, 201, $headers);
     }
 
+    /**
+     * type, destination, amount
+     */
     private function deposit(EventRequest $request)
     {
         return $this->eventService->deposit($request);
     }
 
+    /**
+     * type, origin, amount
+     */
     private function withdraw(EventRequest $request)
     {
         return $this->eventService->withdraw($request);
     }
 
+    /**
+     * type, origin, amount, destination
+     */
     private function transfer(EventRequest $request)
     {
         return $this->eventService->transfer($request);

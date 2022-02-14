@@ -22,12 +22,17 @@ class EventService implements EventInterface {
         $this->accountService = new AccountService($this->accountRepository);
     }
 
+    /**
+     * destination, amount
+     */
     public function deposit($request)
     {
         $account = $this->accountRepository->find($request->destination);
 
         if (!$account) {
-            $account = $this->accountService->createAccount($request->destination, 0);
+            $account = $this->accountService->createAccount(
+                $request->destination, 0
+            );
         }
 
         if (!$account) {
@@ -45,6 +50,9 @@ class EventService implements EventInterface {
         ];
     }    
     
+    /**
+     * origin, amount
+     */
     public function withdraw($request)
     {
         $account = $this->accountRepository->find($request->origin);
@@ -68,6 +76,9 @@ class EventService implements EventInterface {
         ];
     }
 
+    /**
+     * origin, amount, destination
+     */
     public function transfer($request)
     {
         $amount = $request->amount;
@@ -77,7 +88,9 @@ class EventService implements EventInterface {
             return false;
         }
 
-        $destinationAccount = $this->accountRepository->find($request->destination);
+        $destinationAccount = $this->accountRepository->find(
+            $request->destination
+        );
         if (!$destinationAccount) {
             return false;
         }
@@ -90,7 +103,10 @@ class EventService implements EventInterface {
         $destinationAccount->balance += $amount;
 
         try {
-            DB::transaction(function () use ($originAccount, $destinationAccount) {
+            DB::transaction(function () use (
+                $originAccount,
+                $destinationAccount
+            ) {
                 $this->accountRepository->update($originAccount);
                 $this->accountRepository->update($destinationAccount);
             });

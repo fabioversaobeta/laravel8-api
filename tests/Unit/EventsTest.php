@@ -38,7 +38,7 @@ class EventsTest extends TestCase
     {
         $eventRequest = new EventRequest([
             'type' => 'deposit',
-            'destination' => 101,
+            'destination' => "100",
             'amount' => 10,
         ]);
 
@@ -46,7 +46,9 @@ class EventsTest extends TestCase
 
         $this->eventService->deposit($eventRequest);
 
-        $model = $this->accountService->findAccount($eventRequest->destination);
+        $model = $this->accountService->findAccount(
+            $eventRequest->destination
+        );
 
         $account = new AccountClass($model);
 
@@ -58,13 +60,35 @@ class EventsTest extends TestCase
     {
         $eventRequest = new EventRequest([
             'type' => 'deposit',
-            'destination' => 101,
+            'destination' => "100",
             'amount' => 10,
         ]);
 
         $this->eventService->deposit($eventRequest);
         
-        $model = $this->accountService->findAccount($eventRequest->destination);
+        $model = $this->accountService->findAccount(
+            $eventRequest->destination
+        );
+
+        $account = new AccountClass($model);
+
+        $this->assertEquals($account->getBalance(), 10);
+    }
+
+    /** @test */
+    public function deposit_amount_in_a_secound_account()
+    {
+        $eventRequest = new EventRequest([
+            'type' => 'deposit',
+            'destination' => "150",
+            'amount' => 10,
+        ]);
+
+        $this->eventService->deposit($eventRequest);
+        
+        $model = $this->accountService->findAccount(
+            $eventRequest->destination
+        );
 
         $account = new AccountClass($model);
 
@@ -74,12 +98,46 @@ class EventsTest extends TestCase
     /** @test */
     public function transfer_amount_of_non_exists_account()
     {
-        $this->assertTrue(true);
+        $eventRequest = new EventRequest([
+            'type' => 'transfer',
+            'origin' => "100",
+            'destination' => 200,
+            'amount' => 10,
+        ]);
+
+        $transfered = $this->eventService->transfer($eventRequest);
+
+        $this->assertFalse($transfered);
     }
 
     /** @test */
     public function transfer_amount_of_exists_accounts()
     {
-        $this->assertTrue(true);
+        $eventRequest = new EventRequest([
+            'type' => 'deposit',
+            'destination' => "100",
+            'amount' => 10,
+        ]);
+
+        $this->eventService->deposit($eventRequest);
+
+        $eventRequest = new EventRequest([
+            'type' => 'deposit',
+            'destination' => "150",
+            'amount' => 10,
+        ]);
+
+        $this->eventService->deposit($eventRequest);
+
+        $eventRequest = new EventRequest([
+            'type' => 'transfer',
+            'origin' => "100",
+            'destination' => "150",
+            'amount' => 10,
+        ]);
+
+        $transfered = $this->eventService->transfer($eventRequest);
+
+        $this->assertNotFalse($transfered);
     }
 }

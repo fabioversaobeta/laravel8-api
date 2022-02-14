@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Classes\AccountClass;
 use App\Interfaces\AccountInterface;
 use App\Models\Events;
 use App\Repository\AccountRepository;
@@ -21,26 +22,35 @@ class AccountService implements AccountInterface {
     {
         $this->accountRepository->delete();
 
-        // $this->accountRepository->save(100, 10);
-
-        $this->accountRepository->save(300, 0);
+        $this->accountRepository->save("300", 0);
     }
     
+    /**
+     * @param  int $account_id
+     * @return int $balance
+     */
     public function getBalance($account_id)
     {
         if (!is_numeric($account_id)) {
             return false;
         }
 
-        $account = $this->accountRepository->find($account_id);
+        $model = $this->accountRepository->find($account_id);
 
-        if (!$account) {
+        if (!$model) {
             return false;
         }
 
-        return round($account->balance);
+        $account = new AccountClass($model);
+
+        return round($account->getBalance());
     }
 
+    /**
+     * @param int $account_id
+     * @param float $amount
+     * @return \App\Models\Account $model
+     */
     public function createAccount($account_id, $amount)
     {
         $account = $this->accountRepository->find($account_id);
@@ -56,6 +66,10 @@ class AccountService implements AccountInterface {
         return false;
     }
 
+    /**
+     * @param  int  $account_id
+     * @return \App\Models\Account $model
+     */
     public function findAccount($account_id)
     {
         return $this->accountRepository->find($account_id);

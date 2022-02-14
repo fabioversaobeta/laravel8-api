@@ -21,14 +21,14 @@ class EventTest extends TestCase
 
         $data = [
             'type' => 'deposit',
-            'destination' => 100,
+            'destination' => "100",
             'amount' => 10
         ];
 
         $return = [
             "destination" => [
-                "id" => 100,
-                "balance" => 20
+                "id" => "100",
+                "balance" => 10
             ]
         ];
 
@@ -37,6 +37,6 @@ class EventTest extends TestCase
 
         $response->assertExactJson($return);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 }
