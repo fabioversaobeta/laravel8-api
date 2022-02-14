@@ -96,6 +96,48 @@ class EventsTest extends TestCase
     }
 
     /** @test */
+    public function withdraw_amount_of_exists_account()
+    {
+        $eventRequest = new EventRequest([
+            'type' => 'deposit',
+            'destination' => "500",
+            'amount' => 1000,
+        ]);
+
+        $this->eventService->deposit($eventRequest);
+
+        $eventRequest = new EventRequest([
+            'type' => 'withdraw',
+            'origin' => "500",
+            'amount' => 1000,
+        ]);
+
+        $this->eventService->withdraw($eventRequest);
+
+        $model = $this->accountService->findAccount(
+            $eventRequest->origin
+        );
+
+        $account = new AccountClass($model);
+
+        $this->assertEquals($account->getBalance(), 0);
+    }
+
+    /** @test */
+    public function withdraw_amount_of_non_exists_account()
+    {
+        $eventRequest = new EventRequest([
+            'type' => 'withdraw',
+            'origin' => "600",
+            'amount' => 1000,
+        ]);
+
+        $hasWithdraw = $this->eventService->withdraw($eventRequest);
+
+        $this->assertFalse($hasWithdraw);
+    }
+
+    /** @test */
     public function transfer_amount_of_non_exists_account()
     {
         $eventRequest = new EventRequest([
@@ -139,5 +181,13 @@ class EventsTest extends TestCase
         $transfered = $this->eventService->transfer($eventRequest);
 
         $this->assertNotFalse($transfered);
+
+        $model = $this->accountService->findAccount(
+            $eventRequest->destination
+        );
+
+        $account = new AccountClass($model);
+
+        $this->assertEquals($account->getBalance(), 20);
     }
 }

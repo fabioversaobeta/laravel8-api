@@ -34,8 +34,8 @@ class AccountsController extends Controller
     public function balance(BalanceAccountRequest $request)
     {
         $balance = $this->accountService->getBalance($request->account_id);
-
-        if (!$balance) {
+        
+        if ($balance === false) {
             return response(0, 404);
         }
 
