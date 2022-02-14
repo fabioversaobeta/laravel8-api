@@ -2,12 +2,18 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class EventTest extends TestCase
 {
+    use DatabaseMigrations;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /** @test */
     public function deposit_into_existing_account()
     {

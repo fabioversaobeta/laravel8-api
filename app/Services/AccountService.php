@@ -49,7 +49,7 @@ class AccountService implements AccountInterface {
             return $account;
         }
 
-        if($this->accountRepository->save($account_id, $amount)) {
+        if($this->accountRepository->save($account_id, 0)) {
             return $this->accountRepository->find($account_id);
         }
 

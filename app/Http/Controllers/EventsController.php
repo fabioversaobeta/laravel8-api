@@ -26,10 +26,6 @@ class EventsController extends Controller
      */
     public function event(EventRequest $request)
     {
-        if ($request->type == 'deposit') {
-            $this->deposit($request);
-        }
-
         switch ($request->type) {
             case 'deposit':
                 $return = $this->deposit($request);

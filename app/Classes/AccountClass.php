@@ -21,14 +21,14 @@ class AccountClass {
 
     public function getBalance()
     {
-        return round($this->balance);
+        return $this->balance;
     }
 
     public function getResponse()
     {
         return [
             "id" => $this->account_id,
-            "balance" => round($this->balance)
+            "balance" => $this->balance
         ];
     }
 
