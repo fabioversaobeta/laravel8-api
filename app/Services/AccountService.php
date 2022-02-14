@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Interfaces\AccountInterface;
 use App\Models\Events;
 use App\Repository\AccountRepository;
-use App\Classes\AccountClass;
 use App\Models\Account;
 use Illuminate\Http\Request;
 
@@ -21,19 +20,17 @@ class AccountService implements AccountInterface {
     public function reset()
     {
         $this->accountRepository->delete();
+
+        $this->accountRepository->save(100, 10);
+
+        $this->accountRepository->save(300, 0);
     }
     
-    public function getBalance(Request $request)
+    public function getBalance($account_id)
     {
-        $account_id = $request->account_id;
-
         if (!is_numeric($account_id)) {
             return false;
         }
-
-        // TODO find account
-
-        // TODO return account balance
 
         $account = $this->accountRepository->find($account_id);
 
@@ -41,30 +38,22 @@ class AccountService implements AccountInterface {
             return false;
         }
 
-        return $account->getBalance();
+        return round($account->balance);
     }
 
-    public function createAccount(Request $request)
+    public function createAccount($account_id, $amount)
     {
-        $type = $request->type;
-        $destination = $request->destination;
-        $amount = $request->amount;
+        $account = $this->accountRepository->find($account_id);
 
-        if ($type != 'deposit') {
-            return false;
+        if ($account) {
+            return $account;
         }
 
-        $account = new AccountClass();
+        if($this->accountRepository->save($account_id, $amount)) {
+            return $this->accountRepository->find($account_id);
+        }
 
-        $model = new Account();
-        $model->id = $destination;
-        $model->balance = $amount;
-
-        $account->setObject($model);
-
-        $this->accountRepository->save($account);
-
-        return $account;
+        return false;
     }
 
     public function findAccount($account_id)

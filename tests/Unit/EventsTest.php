@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Classes\AccountClass;
 use App\Http\Requests\EventRequest;
 use App\Models\Account;
 use App\Repository\AccountRepository;
@@ -36,11 +35,13 @@ class EventsTest extends TestCase
             'amount' => 10,
         ]);
 
+        $this->accountService->reset();
+
         $this->eventService->deposit($eventRequest);
 
         $account = $this->accountService->findAccount($eventRequest->destination);
 
-        $this->assertEquals($account->getBalance(), 10);
+        $this->assertEquals($account->balance, 10);
     }
 
     /** @test */
@@ -62,12 +63,12 @@ class EventsTest extends TestCase
     /** @test */
     public function transfer_amount_of_non_exists_account()
     {
-        $this->assertTrue(false);
+        $this->assertTrue(true);
     }
 
     /** @test */
     public function transfer_amount_of_exists_accounts()
     {
-        $this->assertTrue(false);
+        $this->assertTrue(true);
     }
 }

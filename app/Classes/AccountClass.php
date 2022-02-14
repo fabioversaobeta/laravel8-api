@@ -8,9 +8,10 @@ class AccountClass {
     private $account_id;
     private $balance;
 
-    public function __construct()
+    public function __construct(Account $account)
     {
-        
+        $this->account_id = $account->id;
+        $this->balance = $account->balance;
     }
 
     public function getId()
@@ -20,31 +21,15 @@ class AccountClass {
 
     public function getBalance()
     {
-        return $this->balance;
+        return round($this->balance);
     }
 
-    public function getObject()
-    {
-        $account = new Account();
-
-        $account->id = $this->account_id;
-        $account->balance = $this->balance;
-
-        return $account;
-    }
-
-    public function getReturn()
+    public function getResponse()
     {
         return [
             "id" => $this->account_id,
-            "balance" => $this->balance
+            "balance" => round($this->balance)
         ];
-    }
-
-    public function setObject(Account $model)
-    {
-        $this->account_id = $model->id;
-        $this->balance = $model->balance;
     }
 
     public function deposit($amount)
@@ -54,6 +39,12 @@ class AccountClass {
 
     public function withdraw($amount)
     {
+        if ($this->balance < $amount) {
+            return false;
+        }
+
         $this->balance = $this->balance - $amount;
+
+        return true;
     }
 }

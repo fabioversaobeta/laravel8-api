@@ -14,8 +14,7 @@ class AccountClassTest extends TestCase
         $model->id = 1234;
         $model->balance = 0;
 
-        $account = new AccountClass();
-        $account->setObject($model);
+        $account = new AccountClass($model);
 
         $this->assertEquals($account->getId(), 1234);
     }
@@ -27,8 +26,7 @@ class AccountClassTest extends TestCase
         $model->id = 100;
         $model->balance = 200;
 
-        $account = new AccountClass();
-        $account->setObject($model);
+        $account = new AccountClass($model);
 
         $this->assertEquals($account->getBalance(), 200);
     }
@@ -40,8 +38,7 @@ class AccountClassTest extends TestCase
         $model->id = 100;
         $model->balance = 0;
 
-        $account = new AccountClass();
-        $account->setObject($model);
+        $account = new AccountClass($model);
 
         $account->deposit(10);
 
@@ -55,8 +52,7 @@ class AccountClassTest extends TestCase
         $model->id = 100;
         $model->balance = 500;
 
-        $account = new AccountClass();
-        $account->setObject($model);
+        $account = new AccountClass($model);
 
         $account->withdraw(500);
 

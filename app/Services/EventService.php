@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Classes\AccountClass;
 use App\Interfaces\EventInterface;
 use App\Models\Events;
 use App\Repository\AccountRepository;
-use App\Classes\AccountClass;
 use App\Models\Account;
 use Illuminate\Http\Request;
 
@@ -26,16 +26,21 @@ class EventService implements EventInterface {
         $account = $this->accountRepository->find($request->destination);
 
         if (!$account) {
-            $account = $this->accountService->createAccount($request);
+            $account = $this->accountService->createAccount($request->destination, 0);
         }
 
-        $account->deposit($request->amount);
+        if (!$account) {
+            return false;
+        }
 
-        $model = $account->getObject();
-        $model->save();
+        $account->balance += $request->amount;
+
+        $this->accountRepository->update($account);
+
+        $accountClass = new AccountClass($account);
 
         return [
-            "destination" => $account->getReturn()
+            "destination" => $accountClass->getResponse()
         ];
     }    
     

@@ -17,8 +17,6 @@ class AccountsController extends Controller
 
     /**
      * Reset all data
-     * 
-     * @return \Illuminate\Http\Response
      */
     public function reset()
     {
@@ -30,12 +28,12 @@ class AccountsController extends Controller
     /**
      * Get Balance of user
      * 
-     * @param  int  $account_id
+     * @param  \App\Http\Requests\BalanceAccountRequest
      * @return \Illuminate\Http\Response
      */
     public function balance(BalanceAccountRequest $request)
     {
-        $balance = $this->accountService->getBalance($request);
+        $balance = $this->accountService->getBalance($request->account_id);
 
         if (!$balance) {
             return response(0, 404);

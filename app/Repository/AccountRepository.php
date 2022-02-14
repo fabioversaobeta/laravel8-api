@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Models\Account;
-use App\Classes\AccountClass;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,25 +24,26 @@ class AccountRepository {
 
     public function find($id)
     {
-        $model = $this->model->find($id);
-
-        if (!$model) {
-            return false;
-        }
-
-        $account = new AccountClass();
-
-        $account->setObject($model);
-
-        return $account;
+        return $this->model->select(['id', 'balance'])->find($id);
     }
 
-    public function save($object)
+    public function save($account_id, $amount)
     {
-        $this->model->id = $object->getId();
-        $this->model->balance = $object->getBalance();
+        $model = new Account;
 
-        return $this->model->save();
+        $model->id = $account_id;
+        $model->balance = $amount;
+
+        return $model->save();
+    }
+
+    public function update($account)
+    {
+        $model = Account::find($account->id);
+
+        $model->balance = $account->balance;
+
+        return $model->update();
     }
 
     // public function reset()
