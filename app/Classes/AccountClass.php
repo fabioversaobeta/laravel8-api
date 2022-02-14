@@ -27,7 +27,7 @@ class AccountClass {
     public function getResponse()
     {
         return [
-            "id" => $this->account_id,
+            "id" => "".$this->account_id."",
             "balance" => $this->balance
         ];
     }

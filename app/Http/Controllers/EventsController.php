@@ -6,16 +6,22 @@ use App\Http\Requests\EventDepositRequest;
 use App\Http\Requests\EventRequest;
 use App\Http\Requests\EventTransferRequest;
 use App\Http\Requests\EventWithdrawRequest;
+use App\Services\AccountService;
 use App\Services\EventService;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
     protected $eventService;
+    protected $accountService;
     
-    public function __construct(EventService $eventService)
+    public function __construct(
+        EventService $eventService,
+        AccountService $accountService
+    )
     {
         $this->eventService = $eventService;
+        $this->accountService = $accountService;
     }
 
     /**
@@ -48,7 +54,11 @@ class EventsController extends Controller
             return response(0, 404);
         }
 
-        return response($return, 200);
+        $headers = ['Content-type'=> 'application/json; charset=utf-8'];
+
+        $strJson = $this->formatJson($return);
+
+        return response($strJson, 201, $headers);
     }
 
     private function deposit(EventRequest $request)
@@ -64,5 +74,16 @@ class EventsController extends Controller
     private function transfer(EventRequest $request)
     {
         return $this->eventService->transfer($request);
+    }
+
+    private function formatJson($str)
+    {
+        $strJson = json_encode($str, JSON_PRETTY_PRINT);
+        $strJson = preg_replace( "/\r|\n/", "", $strJson);
+        $strJson = str_replace("       ", "", $strJson);
+        $strJson = str_replace("    ", "", $strJson);
+        $strJson = str_replace("{ ", "{", $strJson);
+
+        return $strJson;
     }
 }

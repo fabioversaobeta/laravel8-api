@@ -21,7 +21,7 @@ class AccountService implements AccountInterface {
     {
         $this->accountRepository->delete();
 
-        $this->accountRepository->save(100, 10);
+        // $this->accountRepository->save(100, 10);
 
         $this->accountRepository->save(300, 0);
     }

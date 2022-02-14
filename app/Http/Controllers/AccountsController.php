@@ -22,7 +22,7 @@ class AccountsController extends Controller
     {
         $this->accountService->reset();
 
-        return response('', 200);
+        return response('OK', 200);
     }
 
     /**
