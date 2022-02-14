@@ -65,9 +65,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 To Resolve
 
-[ ] save or update
 [ ] pass tests event
-[ ] withdraw
-[ ] transfer
-[ ] float values
 [ ] resposabilities

@@ -5,16 +5,23 @@ namespace Tests\Unit;
 use App\Models\Account;
 use App\Repository\AccountRepository;
 use App\Services\AccountService;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+// use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class AccountTest extends TestCase
 {
+    use DatabaseMigrations;
+    
     private $accountModel;
     private $accountRepository;
     private $accountService;
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->accountModel = new Account();
         $this->accountRepository = new AccountRepository($this->accountModel);
         $this->accountService = new AccountService($this->accountRepository);
@@ -24,7 +31,7 @@ class AccountTest extends TestCase
     {
         $this->accountService->reset();
 
-        $createdAccount = $this->accountService->createAccount(12345, 0) ? true : false;
+        $createdAccount = $this->accountService->createAccount(125, 0) ? true : false;
 
         $this->assertTrue($createdAccount);
     }
@@ -32,9 +39,10 @@ class AccountTest extends TestCase
     /** @test */
     public function get_balance_account()
     {
-        $this->accountService->reset();
+        $accountService = new AccountService(new AccountRepository(new Account()));
+        $accountService->reset();
 
-        $balance = $this->accountService->getBalance(100);
+        $balance = $accountService->getBalance(100);
 
         $this->assertEquals($balance, 10);
     }

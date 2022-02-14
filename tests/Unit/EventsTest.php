@@ -2,15 +2,20 @@
 
 namespace Tests\Unit;
 
+use App\Classes\AccountClass;
 use App\Http\Requests\EventRequest;
 use App\Models\Account;
 use App\Repository\AccountRepository;
 use App\Services\AccountService;
 use App\Services\EventService;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+// use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class EventsTest extends TestCase
 {
+    use DatabaseMigrations;
+    
     private $accountModel;
     private $accountRepository;
     private $accountService;
@@ -19,6 +24,8 @@ class EventsTest extends TestCase
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->accountModel = new Account();
         $this->accountRepository = new AccountRepository($this->accountModel);
         $this->accountService = new AccountService($this->accountRepository);
@@ -39,9 +46,11 @@ class EventsTest extends TestCase
 
         $this->eventService->deposit($eventRequest);
 
-        $account = $this->accountService->findAccount($eventRequest->destination);
+        $model = $this->accountService->findAccount($eventRequest->destination);
 
-        $this->assertEquals($account->balance, 10);
+        $account = new AccountClass($model);
+
+        $this->assertEquals($account->getBalance(), 10);
     }
 
     /** @test */
@@ -55,9 +64,11 @@ class EventsTest extends TestCase
 
         $this->eventService->deposit($eventRequest);
         
-        $account = $this->accountService->findAccount($eventRequest->destination);
+        $model = $this->accountService->findAccount($eventRequest->destination);
 
-        $this->assertEquals($account->getBalance(), 20);
+        $account = new AccountClass($model);
+
+        $this->assertEquals($account->getBalance(), 10);
     }
 
     /** @test */

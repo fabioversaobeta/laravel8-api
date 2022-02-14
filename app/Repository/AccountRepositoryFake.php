@@ -7,8 +7,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AccountRepository {
+class AccountRepositoryFake {
     private $model;
+    private $db;
 
     public function __construct(Account $account)
     {
@@ -19,12 +20,20 @@ class AccountRepository {
 
     public function delete()
     {
-        DB::delete('delete from accounts');
+        $this->db = [];
     }
 
     public function find($id)
     {
-        return $this->model->select(['id', 'balance'])->find($id);
+        $account = null;
+
+        foreach ($this->db as $key => $value) {
+            if ($value->id == $id) {
+                $account = $value;
+            }
+        }
+
+        return $account;
     }
 
     public function save($account_id, $amount)
@@ -34,15 +43,21 @@ class AccountRepository {
         $model->id = $account_id;
         $model->balance = $amount;
 
-        return $model->save();
+        $this->db[] = $model;
     }
 
     public function update($account)
     {
-        $model = Account::find($account->id);
+        $newDb = [];
 
-        $model->balance = $account->balance;
+        foreach ($this->db as $key => $value) {
+            if ($value->id == $account->id) {
+                $value = $account;
+            }
 
-        return $model->update();
+            $newDb[] = $value;
+        }
+
+        $this->db = $newDb;      
     }
 }

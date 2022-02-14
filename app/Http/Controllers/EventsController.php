@@ -44,8 +44,12 @@ class EventsController extends Controller
                 break;          
     
             default:
-                return response('', 404);
+                $return = false;
                 break;
+        }
+
+        if (!$return) {
+            return response(0, 404);
         }
 
         return response($return, 200);
@@ -58,13 +62,11 @@ class EventsController extends Controller
 
     private function withdraw(EventRequest $request)
     {
-        // TODO implement
-        return response('withdraw', 200);
+        return $this->eventService->withdraw($request);
     }
 
     private function transfer(EventRequest $request)
     {
-        // TODO implement
-        return response('transfer', 200);
+        return $this->eventService->transfer($request);
     }
 }
