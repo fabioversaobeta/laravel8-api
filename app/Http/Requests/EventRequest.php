@@ -25,7 +25,9 @@ class EventRequest extends FormRequest
     {
         return [
             'type' => 'required',
+            'origin' => 'nullable',
             'amount' => 'required',
+            'destination' => 'nullable',
         ];
     }
 }
